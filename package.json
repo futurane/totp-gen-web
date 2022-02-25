@@ -1,0 +1,16 @@
+{
+  "name": "totp-gen-web",
+  "version": "0.1.0",
+  "description": "Generate totp number on HP",
+  "dependencies": {
+    "@types/node": "^17.0.21",
+    "gulp": "^4.0.2",
+    "gulp-jhaml": "^1.0.8",
+    "gulp-ruby-haml": "0.0.9",
+    "gulp-sass": "^5.1.0",
+    "gulp-typescript": "^6.0.0-alpha.1",
+    "gulp-uglify": "^3.0.2",
+    "sass": "^1.49.9",
+    "typescript": "^4.5.5"
+  }
+}
