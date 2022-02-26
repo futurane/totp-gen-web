@@ -10,4 +10,12 @@
     %link{href: "css/style.css", rel: "stylesheet"}
     %script{src: "js/main.js"}
   %body
-    %p hello, world!
+    %p hello, world! 2
+    %a{ :href => 'http://google.co.jp', :id => 'anchor1' }
+      -#{}でくくってその中に表現するのだ！！
+    %a{ href: 'http://google.co.jp', id: 'anchor2' }
+      -#属性の指定は、こんな風にも書ける(Rubyのhash指定の文法に依存)
+    %a( href='http://google.co.jp' id='anchor3')
+      -#属性の間に、カンマをつけたくない人は、こんな風に()を使っても書ける
+    %a(href='http://google.co.jp'){id: 'anchor4'}
+      -#ただ、()の方は、スペース区切りゆえにできないこともあるので、両方書くことも許されている。

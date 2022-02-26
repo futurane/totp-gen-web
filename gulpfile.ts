@@ -24,7 +24,12 @@
 // var minimist = require('minimist');
 
 var gulp = require('gulp');
-var haml = require('gulp-jhaml')
+// var haml = require('gulp-jhaml')
+// var haml = require('gulp-haml')
+var path = require('path')
+var exec = require('child_process').exec;
+var foreach = require('gulp-foreach');
+
 var typescript = require('gulp-typescript');
 var uglify = require('gulp-uglify');
 // var sass       = require('gulp-sass');
@@ -194,11 +199,53 @@ gulp.task('ts', function () {
         .pipe(gulp.dest(PATHS.scripts.dest));
 });
 
-gulp.task('haml', function() {
-    return gulp
+gulp.task('haml', function(done) {
+    gulp
         .src(PATHS.haml.src)
-        .pipe(haml({}, {eval: false}))
-        .pipe(gulp.dest(PATHS.haml.dest));
+        // .pipe(haml({
+        //     compiler: 'visionmedia',
+        //     compilerOpts: {
+        //         cache: false
+        //     }
+        // }))
+        .pipe(
+            // Loop over each stream, figure out the filename, and run the stream through concatCSS() passing along the dynamic filename
+            foreach(function(stream, file) {
+                let fpath = file.path;
+                console.log(fpath);
+                // let fname = path.basename(file.path);
+                // // console.log(fname);
+                let fname_woext = path.parse(file.path).name;
+                // console.log(fname_woext);
+                // console.log(__dirname);
+                // console.log(`haml ${fpath} > ${__dirname}/${PATHS.haml.dest}/${fname_woext}.html`)
+
+                exec(`/home/owner/.rbenv/shims/haml ${fpath} > ${__dirname}/${PATHS.haml.dest}/${fname_woext}.html`, function (err, stdout, stderr) {
+                    console.log(stdout);
+                    console.error(stderr);
+                    // console.error(err)
+                    // cb(err);
+                }).on('exit', code => {
+                    console.log('final exit code is', code);
+                    if (code == 1) {
+                        done('error')
+                    } else {
+                        done()
+                    }
+                //    なぜか foreach なのに index.html しかコンパイルできない。done() なくして別 haml ファイルを追加してもできない。（未解決）
+                });
+                // return stream.pipe(file.path)
+            })
+        )
+        // .pipe(exec(`haml ${PATHS.haml.src} > ${PATHS.haml.dest}`, function (err, stdout, stderr) {
+        //     console.log(stdout);
+        //     console.log(stderr);
+        //     // cb(err);
+        // }))
+        // .on('error', (err) => {
+        //     console.error('Error!', err.message);
+        // })
+        // .pipe(gulp.dest(PATHS.haml.dest));
 });
 
 gulp.task('scss', function() {

@@ -1,4 +1,5 @@
 /.*
 !/.gitignore
+/.ruby-version
 
 /node_modules/
